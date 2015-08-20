@@ -18,13 +18,13 @@ class NeuralNetwork(stockVar:Stock) extends PredictionModel{
     
   }
   
-  def predict(mode:String):Array[Double] = {
+  def predict():Array[Double] = {
     val predictions = Array[Double]()
     
     return predictions
   }
   
-  def test(mode:String):Array[Double] = {
+  def test():Array[Double] = {
     val predictions = Array[Double]()
     
     return predictions

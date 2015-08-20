@@ -25,11 +25,28 @@ class EvolutionaryAlgorithm(stockObj: Stock) {
   val recombinationProb = 0.0
   val selectionProb = 0.0
   val replacementProb = 0.0
+  val maxGens = 100
 
   def initialize() {
     for (i <- 1 until populationSize) {
       currentGeneration ::= new Specimen(0, FilterFactory.getRandomFilter(stock), ModelFactory.getRandomModel(stock))
     }
+  }
+  
+  def start(){
+    initialize()
+    for (i <- 1 until maxGens) {
+    	evaluate
+      crossover
+      mutate
+      mutateFilter
+      select
+      replace
+      genCounter += 1
+      currentGeneration = nextGeneration
+      nextGeneration = List[Specimen]()
+    }
+    evaluate
   }
 
   def crossover {
@@ -71,8 +88,25 @@ class EvolutionaryAlgorithm(stockObj: Stock) {
       }
     }
   }
+  
+  def replace {
+  for (parent <- currentGeneration) {
+      if (Randomizer.getDouble > replacementProb) {
+        nextGeneration ::= new Specimen(genCounter, FilterFactory.getRandomFilter(stock), 
+            ModelFactory.getRandomModel(stock))
+      }
+    }
+  }
 
   def evaluate {
-
+    for (parent <- currentGeneration) {
+      val result = SpecimenEvaluation.evaluate(parent)
+      if(population.size < populationSize){
+       population.add(parent) 
+      }else if(result < population.last().fitness){
+        population.pollLast()
+        population.add(parent) 
+      }
+    }
   }
 }
