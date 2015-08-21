@@ -2,6 +2,7 @@ package com.rojosewe.finance.model
 
 import com.rojosewe.finance.model.filter.Filter
 import com.rojosewe.finance.model.prediction.PredictionModel
+import weka.core.Attribute
 
 /**
  * @author sensefields
@@ -14,6 +15,8 @@ class Specimen(currentGen:Int, chosenFilter:Filter, model:PredictionModel, p1:Sp
   val predictionModel:PredictionModel = model
   val parent1:Specimen = p1
   val parent2:Specimen = p2
+  var attributes = List[Attribute]()
+  var values = List[StockValue]()
   
   def compareTo(other:Specimen):Int = {
     this.fitness.compareTo(other.fitness)    

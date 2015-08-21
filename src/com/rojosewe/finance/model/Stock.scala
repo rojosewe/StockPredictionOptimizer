@@ -1,8 +1,5 @@
 package com.rojosewe.finance.model
 
-import java.util.HashMap
-import java.util.Date
-
 /**
  * @author sensefields
  */

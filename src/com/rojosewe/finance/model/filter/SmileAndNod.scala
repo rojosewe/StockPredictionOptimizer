@@ -8,15 +8,11 @@ import weka.core.Attribute
 /**
  * @author sensefields
  */
-class TriangularSmoothing(stockObj: Stock) extends Filter {
-
-  var points: Int = 0
-  val stock = stockObj
-
+class SmileAndNod(stockObj:Stock) extends Filter{
+  
   def preprocess(values: List[StockValue], attributes: List[Attribute]) {
-  }
-
-  def randomize() {
-    points = Randomizer.getInt(50)
+ }
+  
+  def randomize(){
   }
 }
