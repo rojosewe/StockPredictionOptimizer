@@ -7,11 +7,9 @@ import weka.core.Attribute
 /**
  * @author sensefields
  */
-class GoogleTrendsAppender(stockObj:Stock) extends Filter {
+class GoogleTrendsAppender(val stock:Stock) extends Filter {
 
-  val stock = stockObj
-  
-  def preprocess(values: List[StockValue], attributes: List[Attribute]) {
+  def preprocess(attributes: List[Attribute], values: List[StockValue]) {
     
   }
 

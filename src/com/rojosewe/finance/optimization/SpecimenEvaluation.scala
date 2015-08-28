@@ -16,11 +16,11 @@ object SpecimenEvaluation {
   val trainSize = 0.7
   
   def evaluate(spec:Specimen):Double = {
-    spec.filter.preprocess(spec.values, spec.attributes)
+    spec.filter.preprocess(spec.attributes, spec.values)
     var trainData =  splitTrainData(spec.values)
     var testData =  splitTestData(spec.values)
-    spec.predictionModel.train(trainData, spec.attributes)
-    spec.fitness = calculateError(testData, spec.predictionModel.predict(testData, spec.attributes))
+    spec.predictionModel.train(spec.attributes, trainData)
+    spec.fitness = calculateError(testData, spec.predictionModel.predict(spec.attributes, testData))
     return spec.fitness
   }
   
@@ -43,7 +43,7 @@ object SpecimenEvaluation {
   def calculateError(testData:List[StockValue], results:Array[Double]):Double = {
     var error:Double = 0.0
     for((t,i) <- testData.zipWithIndex){
-        error += Math.pow(t.getRawStockValue().closing - results(i),2)
+        error += Math.pow(t.closing - results(i),2)
     }
     return Math.sqrt(error/results.length)
   }

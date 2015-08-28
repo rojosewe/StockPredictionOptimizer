@@ -15,12 +15,12 @@ class KalmanFilter(stockVar:Stock) extends PredictionModel{
 
   }
 
-  def train(trainData:List[StockValue], attributes:List[Attribute]): Boolean = {
+  def train(attributes:List[Attribute], trainData:List[StockValue]): Boolean = {
 
     return true
   }
 
-  def predict(testData:List[StockValue], attributes:List[Attribute]): Array[Double] = {
+  def predict(attributes:List[Attribute], testData:List[StockValue]): Array[Double] = {
     val predictions = Array[Double]()
 
     return predictions

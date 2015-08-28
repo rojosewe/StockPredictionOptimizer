@@ -7,19 +7,12 @@ import weka.core.Attribute
 /**
  * @author sensefields
  */
-class Specimen(currentGen:Int, chosenFilter:Filter, model:PredictionModel, p1:Specimen = null, p2:Specimen = null) extends Comparable[Specimen]{
+class Specimen(var attributes:List[Attribute], var values:List[StockValue], val generation:Int, val filter:Filter, val predictionModel:PredictionModel, val parent1:Specimen = null, val parent2:Specimen = null) extends Comparable[Specimen]{
   
   var fitness:Double = 0.0
-  val generation:Int = 0
-  val filter:Filter = chosenFilter
-  val predictionModel:PredictionModel = model
-  val parent1:Specimen = p1
-  val parent2:Specimen = p2
-  var attributes = List[Attribute]()
-  var values = List[StockValue]()
   
   def compareTo(other:Specimen):Int = {
-    this.fitness.compareTo(other.fitness)    
+    this.fitness.compareTo(other.fitness)
   }
   
 }

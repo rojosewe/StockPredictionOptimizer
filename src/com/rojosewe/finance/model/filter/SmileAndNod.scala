@@ -10,8 +10,9 @@ import weka.core.Attribute
  */
 class SmileAndNod(stockObj:Stock) extends Filter{
   
-  def preprocess(values: List[StockValue], attributes: List[Attribute]) {
- }
+  def preprocess(attributes: List[Attribute], values: List[StockValue]) {
+ 
+  }
   
   def randomize(){
   }

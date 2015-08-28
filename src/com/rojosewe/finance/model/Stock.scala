@@ -1,14 +1,14 @@
 package com.rojosewe.finance.model
 
+import weka.core.Attribute
+
 /**
  * @author sensefields
  */
-class Stock(stockName:String, stockSymbol:String, stockCategory:String) {
-  
-  val name:String = stockName
-  val symbol:String = stockSymbol
-  val category:String = stockCategory
+class Stock(val name:String, val symbol:String, val category:String) {
+
   var values = List[StockValue]()
+  var attributes = List[Attribute]()
   
   override def toString():String = {
     name

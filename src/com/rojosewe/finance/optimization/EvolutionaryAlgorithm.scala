@@ -11,13 +11,12 @@ import com.rojosewe.finance.model.filter.FilterFactory
 /**
  * @author sensefields
  */
-class EvolutionaryAlgorithm(stockObj: Stock) {
+class EvolutionaryAlgorithm(val stock: Stock) {
 
   val population = new TreeSet[Specimen]()
   var genCounter: Int = 0
   var currentGeneration = List[Specimen]()
   var nextGeneration = List[Specimen]()
-  val stock: Stock = stockObj
   val populationSize = 100
   val maxGens = 100
   val survivalSize = populationSize * 0.2
@@ -50,7 +49,7 @@ class EvolutionaryAlgorithm(stockObj: Stock) {
 
   def initialize() {
     for (i <- 0 until populationSize) {
-      currentGeneration ::= new Specimen(0, FilterFactory.getRandomFilter(stock), ModelFactory.getRandomModel(stock))
+      currentGeneration ::= new Specimen(stock.attributes, stock.values, 0, FilterFactory.getRandomFilter(stock), ModelFactory.getRandomModel(stock))
     }
   }
 
@@ -75,19 +74,19 @@ class EvolutionaryAlgorithm(stockObj: Stock) {
   def select {
     for ( i <- 0 until untouched) {
       val parent = currentGeneration(i)
-      nextGeneration ::= new Specimen(genCounter, parent.filter, parent.predictionModel, parent.parent1, parent.parent2)
+      nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, parent.filter, parent.predictionModel, parent.parent1, parent.parent2)
     }
     
     for ( i <- untouched until currentGeneration.length) {
       val parent = currentGeneration(i)
       if (Randomizer.getDouble < selectionProb) {
-        nextGeneration ::= new Specimen(genCounter, parent.filter, parent.predictionModel, parent.parent1, parent.parent2)
+        nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, parent.filter, parent.predictionModel, parent.parent1, parent.parent2)
       }
     }
   }
 
   def recombine(p1: Specimen, p2: Specimen) {
-    val child: Specimen = new Specimen(genCounter, p1.filter, p2.predictionModel, p1, p2)
+    val child: Specimen = new Specimen(p1.attributes, p1.values, genCounter, p1.filter, p2.predictionModel, p1, p2)
     nextGeneration ::= child
   }
 
@@ -111,7 +110,7 @@ class EvolutionaryAlgorithm(stockObj: Stock) {
   def mutateParameters {
     for (parent <- currentGeneration) {
       if (Randomizer.getDouble < mutationProb) {
-        val child: Specimen = new Specimen(genCounter, parent.filter, parent.predictionModel, parent)
+        val child: Specimen = new Specimen(parent.attributes, parent.values, genCounter, parent.filter, parent.predictionModel, parent)
         nextGeneration ::= child
         child.filter.randomize()
         child.predictionModel.randomize()
@@ -123,7 +122,7 @@ class EvolutionaryAlgorithm(stockObj: Stock) {
   def mutateFilter {
     for (parent <- currentGeneration) {
       if (Randomizer.getDouble < filterMutationProb) {
-        nextGeneration ::= new Specimen(genCounter, FilterFactory.getRandomFilter(stock), parent.predictionModel, parent)
+        nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, FilterFactory.getRandomFilter(stock), parent.predictionModel, parent)
       }
     }
   }
@@ -131,14 +130,14 @@ class EvolutionaryAlgorithm(stockObj: Stock) {
   def mutateModel {
     for (parent <- currentGeneration) {
       if (Randomizer.getDouble < modelMutationProb) {
-        nextGeneration ::= new Specimen(genCounter, parent.filter, ModelFactory.getRandomModel(stock), parent)
+        nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, parent.filter, ModelFactory.getRandomModel(stock), parent)
       }
     }
   }
 
   def refill {
     for (i <- nextGeneration.length until populationSize) {
-      nextGeneration ::= new Specimen(0, FilterFactory.getRandomFilter(stock), ModelFactory.getRandomModel(stock))
+      nextGeneration ::= new Specimen(stock.attributes, stock.values, 0, FilterFactory.getRandomFilter(stock), ModelFactory.getRandomModel(stock))
     }
   }
 }
