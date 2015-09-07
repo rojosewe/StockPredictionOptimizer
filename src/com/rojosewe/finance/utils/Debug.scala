@@ -17,25 +17,25 @@ class Log(loggingClass: Class[_]) {
 
   def debug(message: Any) {
     if (Log.level <= Log.DEBUG) {
-      println("DEBUG: " + loggingClass.getSimpleName + ":" + message)
+      println("DEBUG: " + loggingClass.getSimpleName + ": " + message)
     }
   }
 
   def info(message: Any) {
     if (Log.level <= Log.INFO) {
-      println("INFO: " + loggingClass.getSimpleName + ":" + message)
+      println("INFO: " + loggingClass.getSimpleName + ": " + message)
     }
   }
   
   def warn(message: Any) {
     if (Log.level <= Log.WARN) {
-      println("WARN: " + loggingClass.getSimpleName + ":" + message)
+      println("WARN: " + loggingClass.getSimpleName + ": " + message)
     }
   }
   
   def error(message: Any) {
     if (Log.level <= Log.ERROR) {
-      println("ERROR: " + loggingClass.getSimpleName + ":" + message)
+      println("ERROR: " + loggingClass.getSimpleName + ": " + message)
     }
   }
 }

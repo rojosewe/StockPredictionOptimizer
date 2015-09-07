@@ -5,6 +5,7 @@ import java.util.Date
 import weka.core.Instance
 import weka.core.Attribute
 import java.util.ArrayList
+import weka.core.Instances
 
 /**
  * @author sensefields
@@ -13,7 +14,7 @@ class StockValue(val stock:Stock, val date:Date, var attributes: List[Attribute]
   
   var valueMap:HashMap[String, Double]  = new HashMap[String, Double]()
   valueMap .+= ("opening" -> openingPrice, "high" -> highPrice, 
-      "low" -> lowPrice, "volume" -> totalVolume) 
+      "low" -> lowPrice, "volume" -> totalVolume, "closing" -> closing) 
   
   override def toString():String = {
     stock.symbol + ":" + date.toString() + ": " + valueMap("opening") + " - " + closing
@@ -23,12 +24,12 @@ class StockValue(val stock:Stock, val date:Date, var attributes: List[Attribute]
     date
   }
   
-  def toInstance():Instance = {
+  def toInstance(instances:Instances):Instance = {
     val i:Instance = new Instance(attributes.size)
+    i.setDataset(instances)
     for(att <- attributes){
     	i.setValue(att, valueMap(att.name()))
     }
-    i.setClassValue(closing)
     return i
   }
 }

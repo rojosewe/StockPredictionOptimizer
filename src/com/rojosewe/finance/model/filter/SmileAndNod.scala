@@ -8,7 +8,7 @@ import weka.core.Attribute
 /**
  * @author sensefields
  */
-class SmileAndNod(stockObj:Stock) extends Filter{
+class SmileAndNod() extends Filter with Reapplicable{
   
   def preprocess(attributes: List[Attribute], values: List[StockValue]) {
  

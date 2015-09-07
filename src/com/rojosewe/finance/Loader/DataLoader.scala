@@ -35,14 +35,14 @@ class DataLoader {
 
   def loadOriginalAttributes(): List[Attribute] = {
     return List[Attribute](new Attribute("opening"), new Attribute("high"),
-      new Attribute("low"), new Attribute("volume"))
+      new Attribute("low"), new Attribute("volume"), new Attribute("closing"))
   }
 
   def loadStockHistory(stock: Stock) {
     val data = new CSV().stringToData(YahooFinance.csvHistory(stock.symbol, months), true)
     stock.attributes = loadOriginalAttributes()
     for (row <- data) {
-      log.debug(row(DATE_INDEX).asInstanceOf[Long])
+      log.debug(new Date(row(DATE_INDEX).asInstanceOf[Long] * 1000))
       val stockValue: StockValue = new StockValue(
         stock,
         new Date(row(DATE_INDEX).asInstanceOf[Long] * 1000),

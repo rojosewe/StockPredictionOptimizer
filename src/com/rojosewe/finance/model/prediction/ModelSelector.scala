@@ -11,33 +11,33 @@ object ModelFactory{
   
   val availableModels = List("NeutralNetwork", "KalmanFilter")
   
-  def RandomKalmanFilter(stock:Stock):KalmanFilter = {
-    val model:KalmanFilter = new KalmanFilter(stock)
+  def RandomKalmanFilter():KalmanFilter = {
+    val model:KalmanFilter = new KalmanFilter()
     model.randomize()
     return model
   }
   
-  def RandomNeuralNetwork(stock:Stock):NeuralNetwork = {
-    val model:NeuralNetwork = new NeuralNetwork(stock)
+  def RandomNeuralNetwork():NeuralNetwork = {
+    val model:NeuralNetwork = new NeuralNetwork()
     model.randomize()
     return model
   }
   
   def getCopyKalmanFilter(kalmanFilter:KalmanFilter){
-    val model:KalmanFilter = new KalmanFilter(kalmanFilter.stock)
+    val model:KalmanFilter = new KalmanFilter()
   }
   
   def getCopyNeuralNetwork(neuralNetwork:NeuralNetwork){
-    val model:NeuralNetwork = new NeuralNetwork(neuralNetwork.stock)
+    val model:NeuralNetwork = new NeuralNetwork()
     model.hiddenNeurons = neuralNetwork.hiddenNeurons
     model.learningRate= neuralNetwork.learningRate
     model.momentum = neuralNetwork.momentum
   }
   
-  def getRandomModel(stock:Stock):PredictionModel = {
+  def getRandomModel():PredictionModel = {
     val model = Randomizer.getInt(availableModels.length) match{
-      case 1 => RandomNeuralNetwork(stock)
-      case 2 => RandomKalmanFilter(stock)
+      case 1 => RandomNeuralNetwork()
+      case 2 => RandomKalmanFilter()
     }
     return model
   }

@@ -49,7 +49,7 @@ class EvolutionaryAlgorithm(val stock: Stock) {
 
   def initialize() {
     for (i <- 0 until populationSize) {
-      currentGeneration ::= new Specimen(stock.attributes, stock.values, 0, FilterFactory.getRandomFilter(stock), ModelFactory.getRandomModel(stock))
+      currentGeneration ::= new Specimen(stock.attributes, stock.values, 0, FilterFactory.getRandomFilter(), ModelFactory.getRandomModel())
     }
   }
 
@@ -66,28 +66,33 @@ class EvolutionaryAlgorithm(val stock: Stock) {
     if (bestSpecimenEver == null || population.first().fitness < bestSpecimenEver.fitness)
       bestSpecimenEver = population.first()
     currentGeneration = List[Specimen]()
+    
     while (!population.isEmpty()) {
-      currentGeneration ::= population.pollFirst()
+      currentGeneration = currentGeneration :+ population.pollFirst()
     }
   }
 
   def select {
     for ( i <- 0 until untouched) {
       val parent = currentGeneration(i)
-      nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, parent.filter, parent.predictionModel, parent.parent1, parent.parent2)
+      nextGeneration = nextGeneration :+ new Specimen(parent.attributes, parent.values, genCounter, FilterFactory.smileAndNod(), parent.predictionModel, parent.filters, parent.parent1, parent.parent2)
     }
     
     for ( i <- untouched until currentGeneration.length) {
       val parent = currentGeneration(i)
       if (Randomizer.getDouble < selectionProb) {
-        nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, parent.filter, parent.predictionModel, parent.parent1, parent.parent2)
+        nextGeneration = nextGeneration :+ new Specimen(parent.attributes, parent.values, genCounter, FilterFactory.smileAndNod(), parent.predictionModel, parent.filters, parent.parent1, parent.parent2)
       }
     }
   }
 
   def recombine(p1: Specimen, p2: Specimen) {
-    val child: Specimen = new Specimen(p1.attributes, p1.values, genCounter, p1.filter, p2.predictionModel, p1, p2)
-    nextGeneration ::= child
+    try{
+    	val child: Specimen = new Specimen(p2.attributes, p2.values, genCounter, p1.filter, p2.predictionModel, p2.filters, p1, p2)      
+ 			nextGeneration = nextGeneration :+ child
+    }catch {
+      case t: IllegalArgumentException => t.printStackTrace()
+    }
   }
 
   def crossover {
@@ -110,8 +115,8 @@ class EvolutionaryAlgorithm(val stock: Stock) {
   def mutateParameters {
     for (parent <- currentGeneration) {
       if (Randomizer.getDouble < mutationProb) {
-        val child: Specimen = new Specimen(parent.attributes, parent.values, genCounter, parent.filter, parent.predictionModel, parent)
-        nextGeneration ::= child
+        val child: Specimen = new Specimen(parent.attributes, parent.values, genCounter, parent.filter, parent.predictionModel, parent.filters, parent)
+        nextGeneration = nextGeneration :+ child
         child.filter.randomize()
         child.predictionModel.randomize()
 
@@ -122,7 +127,7 @@ class EvolutionaryAlgorithm(val stock: Stock) {
   def mutateFilter {
     for (parent <- currentGeneration) {
       if (Randomizer.getDouble < filterMutationProb) {
-        nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, FilterFactory.getRandomFilter(stock), parent.predictionModel, parent)
+        nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, FilterFactory.getRandomFilter(), parent.predictionModel, parent.filters, parent)
       }
     }
   }
@@ -130,14 +135,14 @@ class EvolutionaryAlgorithm(val stock: Stock) {
   def mutateModel {
     for (parent <- currentGeneration) {
       if (Randomizer.getDouble < modelMutationProb) {
-        nextGeneration ::= new Specimen(parent.attributes, parent.values, genCounter, parent.filter, ModelFactory.getRandomModel(stock), parent)
+        nextGeneration = nextGeneration :+ new Specimen(parent.attributes, parent.values, genCounter, parent.filter, ModelFactory.getRandomModel(), parent.filters, parent)
       }
     }
   }
 
   def refill {
     for (i <- nextGeneration.length until populationSize) {
-      nextGeneration ::= new Specimen(stock.attributes, stock.values, 0, FilterFactory.getRandomFilter(stock), ModelFactory.getRandomModel(stock))
+      nextGeneration = nextGeneration :+ new Specimen(stock.attributes, stock.values, 0, FilterFactory.getRandomFilter(), ModelFactory.getRandomModel())
     }
   }
 }

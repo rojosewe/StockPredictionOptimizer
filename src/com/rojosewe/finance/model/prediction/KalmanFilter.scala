@@ -7,9 +7,7 @@ import weka.core.Attribute
 /**
  * @author sensefields
  */
-class KalmanFilter(stockVar:Stock) extends PredictionModel{
-  
-  var stock:Stock = stockVar
+class KalmanFilter() extends PredictionModel{
   
   def randomize() {
 

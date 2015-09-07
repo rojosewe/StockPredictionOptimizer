@@ -3,6 +3,11 @@ package com.rojosewe.finance.doubtTester
 import com.rojosewe.finance.Loader.DataLoader
 import com.rojosewe.finance.model.Stock
 import com.rojosewe.finance.utils.Log
+import com.rojosewe.finance.model.Specimen
+import com.rojosewe.finance.model.Specimen
+import com.rojosewe.finance.model.filter.TriangularSmoothing
+import com.rojosewe.finance.model.prediction.NeuralNetwork
+import com.rojosewe.finance.optimization.SpecimenEvaluation
 
 /**
  * @author sensefields
@@ -26,6 +31,16 @@ object LinearTesting {
     dl.loadStockHistory(stock)
     log.debug(stock.values)
     log.info("finished evaluating loadData")
+    val filter = new TriangularSmoothing()
+    filter.randomize()
+    log.info(filter)
+    val model = new NeuralNetwork()
+    model.randomize()
+    log.info(model)
+    val spec:Specimen = new Specimen(stock.attributes, stock.values, 
+        0, filter, model)
+    SpecimenEvaluation.evaluate(spec)
+    log.info(spec)
     return true
   } 
 }

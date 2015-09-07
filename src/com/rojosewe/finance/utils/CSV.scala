@@ -1,6 +1,6 @@
 package com.rojosewe.finance.utils
 
-import apiCall.YahooFinance
+import com.rojosewe.finance.api.YahooFinance
 import java.text.SimpleDateFormat
 import java.util.Arrays
 import java.nio.file.{ Paths, Files }

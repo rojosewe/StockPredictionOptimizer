@@ -8,27 +8,33 @@ import com.rojosewe.finance.utils.Randomizer
  */
 object FilterFactory {
 
-  val availableFilters = List("GoogleTrendsAppender", "TriangularSmoothing")
+  val availableFilters = List("GoogleTrendsAppender", "TriangularSmoothing", "SmileAndNod")
 
-  def GoogleTrendsAppender(stock: Stock): GoogleTrendsAppender = {
-    new GoogleTrendsAppender(stock)
+  def googleTrendsAppender(): GoogleTrendsAppender = {
+    new GoogleTrendsAppender()
   }
 
-  def RandomTriangularSmoothing(stock: Stock): TriangularSmoothing = {
-    val filter: TriangularSmoothing = new TriangularSmoothing(stock)
+  def randomTriangularSmoothing(): TriangularSmoothing = {
+    val filter: TriangularSmoothing = new TriangularSmoothing()
     filter.randomize()
     return filter
   }
 
   def getCopyTriangularSmoothing(smoothing: TriangularSmoothing) {
-    val filter: TriangularSmoothing = new TriangularSmoothing(smoothing.stock)
+    val filter: TriangularSmoothing = new TriangularSmoothing()
     filter.points = smoothing.points
   }
+  
+  def smileAndNod():SmileAndNod = {
+    return new SmileAndNod()
+  }
 
-  def getRandomFilter(stock: Stock): Filter = {
+  def getRandomFilter(): Filter = {
     val filter = Randomizer.getInt(availableFilters.length) match {
-      case 1 => GoogleTrendsAppender(stock)
-      case 2 => RandomTriangularSmoothing(stock)
+      case 0 => googleTrendsAppender()
+      case 1 => randomTriangularSmoothing()
+      case 2 => smileAndNod()
+      
     }
     return filter
   }
