@@ -1,5 +1,8 @@
 package com.rojosewe.finance.utils
 
+import java.text.SimpleDateFormat
+import java.util.Date
+
 /**
  * @author sensefields
  */
@@ -11,7 +14,9 @@ object Log {
   val ERROR = 3
 
   val level = Log.DEBUG
+  val sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS z")
 }
+
 
 class Log(loggingClass: Class[_]) {
 
@@ -37,6 +42,12 @@ class Log(loggingClass: Class[_]) {
     if (Log.level <= Log.ERROR) {
       println("ERROR: " + loggingClass.getSimpleName + ": " + message)
     }
+  }
+  
+  private def log(level:String, message:Any){
+    val sb:StringBuilder = new StringBuilder(Log.sdf.format(new Date()))
+    sb.append("- ").append(level).append(": ").append(loggingClass.getSimpleName).append(": ").append(message)
+    println(sb.toString())
   }
 }
 

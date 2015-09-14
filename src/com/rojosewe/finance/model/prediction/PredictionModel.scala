@@ -8,6 +8,7 @@ import weka.core.Attribute
  */
 trait PredictionModel {
   def randomize()
+  def copyModel():PredictionModel
   def train(attributes:List[Attribute], trainData:List[StockValue]):Boolean
   def predict(attributes:List[Attribute], testData:List[StockValue]): Array[Double]
 }

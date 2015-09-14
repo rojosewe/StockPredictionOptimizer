@@ -10,7 +10,7 @@ import com.rojosewe.finance.model.filter.Reapplicable
  */
 class Specimen(var attributes:List[Attribute], var values:List[StockValue], val generation:Int, val filter:Filter, val predictionModel:PredictionModel, var filters:Filters = new Filters(), val parent1:Specimen = null, val parent2:Specimen = null) extends Comparable[Specimen]{
   
-  var fitness:Double = 0.0
+  var fitness:ModelError = new ModelError()
 
   filters.addFilter(filter)
   
@@ -19,7 +19,7 @@ class Specimen(var attributes:List[Attribute], var values:List[StockValue], val 
   }
   
   def compareTo(other:Specimen):Int = {
-    this.fitness.compareTo(other.fitness)
+    this.fitness.rmse.compareTo(other.fitness.rmse)
   }
   
 }

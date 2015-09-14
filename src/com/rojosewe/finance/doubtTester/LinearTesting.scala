@@ -6,8 +6,8 @@ import com.rojosewe.finance.utils.Log
 import com.rojosewe.finance.model.Specimen
 import com.rojosewe.finance.model.Specimen
 import com.rojosewe.finance.model.filter.TriangularSmoothing
-import com.rojosewe.finance.model.prediction.NeuralNetwork
 import com.rojosewe.finance.optimization.SpecimenEvaluation
+import com.rojosewe.finance.model.prediction.ModelFactory
 
 /**
  * @author sensefields
@@ -34,8 +34,7 @@ object LinearTesting {
     val filter = new TriangularSmoothing()
     filter.randomize()
     log.info(filter)
-    val model = new NeuralNetwork()
-    model.randomize()
+    val model = ModelFactory.getRandomModel()
     log.info(model)
     val spec:Specimen = new Specimen(stock.attributes, stock.values, 
         0, filter, model)

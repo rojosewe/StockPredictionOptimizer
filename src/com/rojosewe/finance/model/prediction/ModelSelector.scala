@@ -1,6 +1,5 @@
 package com.rojosewe.finance.model.prediction
 
-import com.rojosewe.finance.model.Stock
 import com.rojosewe.finance.utils.Randomizer
 
 
@@ -8,36 +7,30 @@ import com.rojosewe.finance.utils.Randomizer
  * @author sensefields
  */
 object ModelFactory{
+
+  val availableModels = List("NeutralNetwork", "KalmanFilter", "LeastMedSquare", 
+      "LinearRegression", "PLSClassifier", "RBFNetwork", "GaussianProcesses",
+      "SMORegModel")
   
-  val availableModels = List("NeutralNetwork", "KalmanFilter")
-  
-  def RandomKalmanFilter():KalmanFilter = {
-    val model:KalmanFilter = new KalmanFilter()
+  def randomizeModel(model:PredictionModel):PredictionModel = {
     model.randomize()
     return model
   }
   
-  def RandomNeuralNetwork():NeuralNetwork = {
-    val model:NeuralNetwork = new NeuralNetwork()
-    model.randomize()
-    return model
-  }
-  
-  def getCopyKalmanFilter(kalmanFilter:KalmanFilter){
-    val model:KalmanFilter = new KalmanFilter()
-  }
-  
-  def getCopyNeuralNetwork(neuralNetwork:NeuralNetwork){
-    val model:NeuralNetwork = new NeuralNetwork()
-    model.hiddenNeurons = neuralNetwork.hiddenNeurons
-    model.learningRate= neuralNetwork.learningRate
-    model.momentum = neuralNetwork.momentum
+  def getModelCopy(model:PredictionModel):PredictionModel = {
+    model.copyModel()
   }
   
   def getRandomModel():PredictionModel = {
     val model = Randomizer.getInt(availableModels.length) match{
-      case 1 => RandomNeuralNetwork()
-      case 2 => RandomKalmanFilter()
+      case 0 => randomizeModel(new NeuralNetworkModel())
+      case 1 => randomizeModel(new KalmanFilterModel())
+      case 2 => randomizeModel(new LeastMedSquareModel())
+      case 3 => randomizeModel(new LinearRegressionModel())
+      case 4 => randomizeModel(new PLSClassifierModel())
+      case 5 => randomizeModel(new RBFNetworkModel())
+      case 6 => randomizeModel(new GaussianProcessModel())
+      case 7 => randomizeModel(new SMORegModel())
     }
     return model
   }

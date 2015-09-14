@@ -8,6 +8,7 @@ import weka.core.converters.ConverterUtils.DataSource
 import weka.core.FastVector
 import weka.core.Attribute
 import com.rojosewe.finance.utils.Log
+import com.rojosewe.finance.model.ModelError
 
 /**
  * @author sensefields
@@ -23,7 +24,7 @@ object SpecimenEvaluation {
     var testData = splitTestData(spec.values)
     spec.predictionModel.train(spec.attributes, trainData)
     spec.fitness = calculateError(testData, spec.predictionModel.predict(spec.attributes, testData))
-    return spec.fitness
+    return spec.fitness.rmse
   }
 
   def splitTrainData(data: List[StockValue]): List[StockValue] = {
@@ -42,12 +43,23 @@ object SpecimenEvaluation {
     return testData
   }
 
-  def calculateError(testData: List[StockValue], results: Array[Double]): Double = {
-    var error: Double = 0.0
+  def calculateError(testData: List[StockValue], results: Array[Double]): ModelError = {
+    var error: ModelError = new ModelError()
     for ((t, i) <- testData.zipWithIndex) {
       log.debug(t.closing, results(i))
-      error += Math.pow(t.closing - results(i), 2)
+      error.rmse += Math.pow(t.closing - results(i), 2)
+      if(t.closing < results(i))
+        error.higherThanReal += 1
+      else if(t.closing > results(i))
+        error.lowerThanReal += 1
+      error.averageError += Math.abs(t.closing - results(i))
     }
-    return Math.sqrt(error / results.length)
+    error.averageError = error.averageError / results.length
+    for ((t, i) <- testData.zipWithIndex) {
+      error.stdDev += Math.pow(error.averageError - Math.abs(t.closing - results(i)), 2)
+    }
+    error.stdDev = error.stdDev / results.length
+    error.rmse = Math.sqrt(error.rmse / results.length)
+    return error
   }
 }

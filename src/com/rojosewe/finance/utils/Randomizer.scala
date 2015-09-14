@@ -20,5 +20,6 @@ object Randomizer {
   
   def getInt(max:Int):Int = {
     random.nextInt(max)
-  }   
+  }
+  
 }

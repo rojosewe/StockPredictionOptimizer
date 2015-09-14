@@ -58,12 +58,12 @@ class EvolutionaryAlgorithm(val stock: Stock) {
       val result = SpecimenEvaluation.evaluate(parent)
       if (population.size < survivalSize) {
         population.add(parent)
-      } else if (result < population.last().fitness) {
+      } else if (result < population.last().fitness.rmse) {
         population.pollLast()
         population.add(parent)
       }
     }
-    if (bestSpecimenEver == null || population.first().fitness < bestSpecimenEver.fitness)
+    if (bestSpecimenEver == null || population.first().fitness.rmse < bestSpecimenEver.fitness.rmse)
       bestSpecimenEver = population.first()
     currentGeneration = List[Specimen]()
     
