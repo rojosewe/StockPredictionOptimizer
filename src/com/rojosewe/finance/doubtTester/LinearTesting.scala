@@ -34,7 +34,7 @@ object LinearTesting {
     val filter = new TriangularSmoothing()
     filter.randomize()
     log.info(filter)
-    val model = ModelFactory.getRandomModel()
+    val model = ModelFactory.getModel(ModelFactory.NeuralNetwork)
     log.info(model)
     val spec:Specimen = new Specimen(stock.attributes, stock.values, 
         0, filter, model)

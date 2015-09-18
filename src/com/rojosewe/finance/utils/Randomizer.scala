@@ -7,7 +7,7 @@ import scala.util.Random
  */
 object Randomizer {
   
-  val seed = 121
+  val seed = 1
   val random = new Random(seed)
   
   def getInt:Int = {

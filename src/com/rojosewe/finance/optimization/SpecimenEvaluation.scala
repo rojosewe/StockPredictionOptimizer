@@ -22,6 +22,7 @@ object SpecimenEvaluation {
     spec.filter.preprocess(spec.attributes, spec.values)
     var trainData = splitTrainData(spec.values)
     var testData = splitTestData(spec.values)
+    log.debug(spec.predictionModel)
     spec.predictionModel.train(spec.attributes, trainData)
     spec.fitness = calculateError(testData, spec.predictionModel.predict(spec.attributes, testData))
     return spec.fitness.rmse
